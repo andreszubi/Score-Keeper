@@ -8,12 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var players: [String] = ["John", "Jan", "Max"]
+    @State private var scores: [Int] = [0, 0, 0]
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            ForEach(0..<players.count, id: \.description) { index in
+                TextField("Enter Player Name", text: $players[index])
+                Stepper("\(scores[index])", value: $scores[index])
+            }
+            
+            Button("Add Player", systemImage: "plus.circle.fill") {
+                players.append("")
+                scores.append(0)
+            }
+            
+            Spacer()
         }
         .padding()
     }
