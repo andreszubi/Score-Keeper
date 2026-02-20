@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var scoreboard = Scoreboard()
     @State private var players: [Player] = [
         Player(name: "John", score: 0),
         Player(name: "Jan", score: 0),
@@ -30,7 +31,7 @@ struct ContentView: View {
                 }
                 .font(.headline)
                 
-                ForEach($players) { $player in
+                ForEach($scoreboard.players) { $player in
                     GridRow {
                         TextField("Enter Player Name", text: $player.name)
                         Text("\(player.score)")
@@ -42,10 +43,19 @@ struct ContentView: View {
             .padding(.vertical)
             
             Button("Add Player", systemImage: "plus.circle.fill") {
-                players.append(Player(name: "", score: 0))
+                scoreboard.players.append(Player(name: "", score: 0))
             }
             
             Spacer()
+            
+            switch scoreboard.state {
+            case .setup:
+                Button("Start Game", systemImage: "play.fill") {
+                    scoreboard.state = .playing
+                }
+            default:
+                EmptyView()
+            }
         }
         .padding()
     }
